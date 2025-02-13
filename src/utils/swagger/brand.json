@@ -1,0 +1,267 @@
+{
+  "paths": {
+    "/api/v1/brands": {
+      "get": {
+        "summary": "Listar marcas de vehículos",
+        "description": "Obtiene una lista de todas las marcas de vehículos.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Brands"],
+        "responses": {
+          "200": {
+            "description": "Lista de marcas de vehículos obtenida correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Brand"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "post": {
+        "summary": "Crear una nueva marca",
+        "description": "Registra una nueva marca de vehículo. Solo accesible para administradores.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Brands"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Marca creada exitosamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Brand"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos inválidos o marca duplicada"
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "403": {
+            "description": "Acceso denegado (solo administradores)"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/api/v1/brands/{id}": {
+      "get": {
+        "summary": "Obtener una marca por ID",
+        "description": "Obtiene la información de una marca de vehículo específica según su ID.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Brands"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID de la marca",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalles de la marca obtenidos correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Brand"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "404": {
+            "description": "Marca no encontrada"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Actualizar una marca",
+        "description": "Actualiza la información de una marca de vehículo. Solo accesible para administradores.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Brands"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID de la marca",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Marca actualizada correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Brand"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos inválidos"
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "403": {
+            "description": "Acceso denegado (solo administradores)"
+          },
+          "404": {
+            "description": "Marca no encontrada"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Eliminar una marca",
+        "description": "Elimina una marca de vehículo. Solo accesible para administradores.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Brands"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID de la marca",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Marca eliminada correctamente"
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "403": {
+            "description": "Acceso denegado (solo administradores)"
+          },
+          "404": {
+            "description": "Marca no encontrada o tiene modelos asociados"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Brand": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "65c9f1e5d3a9b91f80e4a6b2"
+          },
+          "name": {
+            "type": "string",
+            "example": "Toyota"
+          },
+          "vehicleType": {
+            "type": "string",
+            "example": "65c9f1e5d3a9b91f80e4a6a9"
+          },
+          "vehicleTypeName": {
+            "type": "string",
+            "example": "Automóvil"
+          }
+        }
+      },
+      "BrandInput": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Toyota"
+          },
+          "vehicleType": {
+            "type": "string",
+            "example": "65c9f1e5d3a9b91f80e4a6a9"
+          }
+        },
+        "required": ["name", "vehicleType"]
+      }
+    },
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

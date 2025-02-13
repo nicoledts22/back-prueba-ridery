@@ -1,0 +1,497 @@
+{
+  "paths": {
+    "/api/v1/vehicles": {
+      "get": {
+        "summary": "Listar vehículos",
+        "description": "Obtiene una lista de todos los vehículos registrados. Requiere autenticación.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Vehicles"],
+        "responses": {
+          "200": {
+            "description": "Lista de vehículos obtenida correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Vehicle"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "post": {
+        "summary": "Registrar un nuevo vehículo",
+        "description": "Registra un vehículo en la base de datos. Solo accesible para administradores.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Vehicles"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VehicleInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Vehículo creado correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Vehicle"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos inválidos"
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "403": {
+            "description": "Acceso denegado (solo administradores)"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/api/v1/vehicles/{id}": {
+      "get": {
+        "summary": "Obtener un vehículo por ID",
+        "description": "Obtiene la información de un vehículo específico. Requiere autenticación.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Vehicles"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID del vehículo",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalles del vehículo obtenidos correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Vehicle"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "404": {
+            "description": "Vehículo no encontrado"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Actualizar un vehículo",
+        "description": "Actualiza la información de un vehículo. Solo accesible para administradores.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Vehicles"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID del vehículo",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VehicleInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Vehículo actualizado correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Vehicle"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos inválidos"
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "403": {
+            "description": "Acceso denegado (solo administradores)"
+          },
+          "404": {
+            "description": "Vehículo no encontrado"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Eliminar un vehículo",
+        "description": "Elimina un vehículo. Solo accesible para administradores.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Vehicles"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID del vehículo",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Vehículo eliminado correctamente"
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "403": {
+            "description": "Acceso denegado (solo administradores)"
+          },
+          "404": {
+            "description": "Vehículo no encontrado"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/api/v1/vehicles/total": {
+      "get": {
+        "summary": "Total de vehículos",
+        "description": "Obtiene el total de vehículos registrados. Requiere autenticación.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Vehicle Stats"],
+        "responses": {
+          "200": {
+            "description": "Total de vehículos obtenido correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "total": {
+                      "type": "integer",
+                      "example": 120
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/api/v1/vehicles/getByType": {
+      "get": {
+        "summary": "Vehículos por tipo",
+        "description": "Obtiene la cantidad de vehículos agrupados por tipo. Requiere autenticación.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Vehicle Stats"],
+        "responses": {
+          "200": {
+            "description": "Distribución de vehículos por tipo obtenida correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "example": "Carro"
+                      },
+                      "count": {
+                        "type": "integer",
+                        "example": 75
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/api/v1/vehicles/getByStatus": {
+      "get": {
+        "summary": "Vehículos por estado",
+        "description": "Obtiene la cantidad de vehículos agrupados por estado. Solo accesible para administradores.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Vehicle Stats"],
+        "responses": {
+          "200": {
+            "description": "Distribución de vehículos por estado obtenida correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string",
+                        "example": "disponible"
+                      },
+                      "count": {
+                        "type": "integer",
+                        "example": 50
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "403": {
+            "description": "Acceso denegado (solo administradores)"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/api/v1/vehicles/getByDateRange": {
+      "get": {
+        "summary": "Vehículos registrados en un rango de fechas",
+        "description": "Obtiene la cantidad de vehículos registrados en un período específico. Solo accesible para administradores.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Vehicle Stats"],
+        "parameters": [
+          {
+            "name": "startDate",
+            "in": "query",
+            "required": true,
+            "description": "Fecha de inicio (YYYY-MM-DD)",
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2024-01-01"
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "required": true,
+            "description": "Fecha de fin (YYYY-MM-DD)",
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2024-02-01"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cantidad de vehículos registrados en el rango de fechas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "total": {
+                      "type": "integer",
+                      "example": 30
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parámetros de fecha inválidos"
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "403": {
+            "description": "Acceso denegado (solo administradores)"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Vehicle": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "65c9f1e5d3a9b91f80e4a6b2"
+          },
+          "brand": {
+            "type": "string",
+            "example": "Toyota"
+          },
+          "model": {
+            "type": "string",
+            "example": "Corolla"
+          },
+          "type": {
+            "type": "string",
+            "example": "Carro"
+          },
+          "year": {
+            "type": "integer",
+            "example": 2020
+          },
+          "status": {
+            "type": "string",
+            "enum": ["disponible", "en servicio", "en mantenimiento"],
+            "example": "disponible"
+          },
+          "color": {
+            "type": "string",
+            "example": "Rojo"
+          },
+          "placa": {
+            "type": "string",
+            "example": "ABC1234"
+          }
+        }
+      },
+      "VehicleInput": {
+        "type": "object",
+        "properties": {
+          "brand": {
+            "type": "string",
+            "example": "65c9f1e5d3a9b91f80e4a6b2"
+          },
+          "model": {
+            "type": "string",
+            "example": "65c9f1e5d3a9b91f80e4a6b3"
+          },
+          "type": {
+            "type": "string",
+            "example": "65c9f1e5d3a9b91f80e4a6b4"
+          },
+          "year": {
+            "type": "integer",
+            "example": 2020
+          },
+          "status": {
+            "type": "string",
+            "enum": ["disponible", "en servicio", "en mantenimiento"],
+            "example": "disponible"
+          },
+          "color": {
+            "type": "string",
+            "example": "Rojo"
+          },
+          "placa": {
+            "type": "string",
+            "example": "ABC1234"
+          }
+        },
+        "required": ["brand", "model", "type", "year", "status", "color", "placa"]
+      }
+    },
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
+

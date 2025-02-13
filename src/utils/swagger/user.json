@@ -1,0 +1,301 @@
+{
+  "paths": {
+    "/api/v1/users": {
+      "get": {
+        "summary": "Listar usuarios",
+        "description": "Obtiene una lista de todos los usuarios registrados. Solo accesible para administradores.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Users"],
+        "responses": {
+          "200": {
+            "description": "Lista de usuarios obtenida correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "403": {
+            "description": "Acceso denegado (solo administradores)"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/api/v1/users/{id}": {
+      "get": {
+        "summary": "Obtener un usuario por ID",
+        "description": "Obtiene la información de un usuario específico. Solo accesible para administradores.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID del usuario",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalles del usuario obtenidos correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "403": {
+            "description": "Acceso denegado (solo administradores)"
+          },
+          "404": {
+            "description": "Usuario no encontrado"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Actualizar un usuario",
+        "description": "Actualiza la información de un usuario. Solo accesible para administradores.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID del usuario",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Usuario actualizado correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos inválidos"
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "403": {
+            "description": "Acceso denegado (solo administradores)"
+          },
+          "404": {
+            "description": "Usuario no encontrado"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Eliminar un usuario",
+        "description": "Elimina un usuario. Solo accesible para administradores.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID del usuario",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Usuario eliminado correctamente"
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "403": {
+            "description": "Acceso denegado (solo administradores)"
+          },
+          "404": {
+            "description": "Usuario no encontrado"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/api/v1/users/updateMe": {
+      "patch": {
+        "summary": "Actualizar perfil del usuario autenticado",
+        "description": "Permite a un usuario autenticado actualizar su propia información.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Users"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpdateMe"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Perfil actualizado correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos inválidos"
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "65c9f1e5d3a9b91f80e4a6b2"
+          },
+          "name": {
+            "type": "string",
+            "example": "Juan"
+          },
+          "lastname": {
+            "type": "string",
+            "example": "Pérez"
+          },
+          "email": {
+            "type": "string",
+            "example": "juan.perez@example.com"
+          }
+        }
+      },
+      "UserInput": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Juan"
+          },
+          "lastname": {
+            "type": "string",
+            "example": "Pérez"
+          },
+          "email": {
+            "type": "string",
+            "example": "juan.perez@example.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "password1234"
+          },
+          "passwordConfirm": {
+            "type": "string",
+            "example": "password1234"
+          }
+        },
+        "required": ["name", "lastname", "email", "password", "passwordConfirm"]
+      },
+      "UserUpdateMe": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Juan"
+          },
+          "lastname": {
+            "type": "string",
+            "example": "Pérez"
+          },
+          "email": {
+            "type": "string",
+            "example": "juan.perez@example.com"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

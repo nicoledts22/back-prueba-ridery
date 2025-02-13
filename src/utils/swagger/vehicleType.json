@@ -1,0 +1,105 @@
+{
+  "paths": {
+    "/api/v1/vehicleTypes": {
+      "get": {
+        "summary": "Listar tipos de vehículos",
+        "description": "Obtiene una lista de todos los tipos de vehículos.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Vehicle Types"],
+        "responses": {
+          "200": {
+            "description": "Lista de tipos de vehículos obtenida correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VehicleType"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/api/v1/vehicleTypes/{id}": {
+      "get": {
+        "summary": "Obtener un tipo de vehículo por ID",
+        "description": "Obtiene la información de un tipo de vehículo específico según su ID.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Vehicle Types"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID del tipo de vehículo",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalles del tipo de vehículo obtenidos correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VehicleType"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "404": {
+            "description": "Tipo de vehículo no encontrado"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "VehicleType": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "65c9f1e5d3a9b91f80e4a6a9"
+          },
+          "name": {
+            "type": "string",
+            "example": "Motocicleta"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

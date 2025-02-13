@@ -1,0 +1,267 @@
+{
+  "paths": {
+    "/api/v1/models": {
+      "get": {
+        "summary": "Listar modelos de vehículos",
+        "description": "Obtiene una lista de todos los modelos de vehículos.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Models"],
+        "responses": {
+          "200": {
+            "description": "Lista de modelos de vehículos obtenida correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Model"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "post": {
+        "summary": "Crear un nuevo modelo",
+        "description": "Registra un nuevo modelo de vehículo. Solo accesible para administradores.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Models"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ModelInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Modelo creado exitosamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Model"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos inválidos o modelo duplicado"
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "403": {
+            "description": "Acceso denegado (solo administradores)"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/api/v1/models/{id}": {
+      "get": {
+        "summary": "Obtener un modelo por ID",
+        "description": "Obtiene la información de un modelo de vehículo específico según su ID.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Models"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID del modelo",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalles del modelo obtenidos correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Model"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "404": {
+            "description": "Modelo no encontrado"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Actualizar un modelo",
+        "description": "Actualiza la información de un modelo de vehículo. Solo accesible para administradores.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Models"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID del modelo",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ModelInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Modelo actualizado correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Model"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos inválidos"
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "403": {
+            "description": "Acceso denegado (solo administradores)"
+          },
+          "404": {
+            "description": "Modelo no encontrado"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Eliminar un modelo",
+        "description": "Elimina un modelo de vehículo. Solo accesible para administradores.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": ["Models"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID del modelo",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Modelo eliminado correctamente"
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "403": {
+            "description": "Acceso denegado (solo administradores)"
+          },
+          "404": {
+            "description": "Modelo no encontrado o tiene vehículos asociados"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Model": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "65c9f1e5d3a9b91f80e4a6b2"
+          },
+          "name": {
+            "type": "string",
+            "example": "Corolla"
+          },
+          "brand": {
+            "type": "string",
+            "example": "65c9f1e5d3a9b91f80e4a6a9"
+          },
+          "brandName": {
+            "type": "string",
+            "example": "Toyota"
+          }
+        }
+      },
+      "ModelInput": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Corolla"
+          },
+          "brand": {
+            "type": "string",
+            "example": "65c9f1e5d3a9b91f80e4a6a9"
+          }
+        },
+        "required": ["name", "brand"]
+      }
+    },
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

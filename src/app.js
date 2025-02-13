@@ -30,7 +30,7 @@ const app = express();
 // 1) GLOBAL MIDDLEWARES
 // Implement CORS
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: process.env.BASE_URL_FRONT || 'http://localhost:5173',
     credentials: true,
     methods: 'GET,POST,PATCH,PUT,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type,Authorization'
